@@ -62,80 +62,123 @@ const printMainMenu = () => {
   
 };
 
-function viewAllDepartments() {
-  async (req, res) => {
-    try {
-      const [rows, fields] = await db.query('SELECT * FROM department');
-      console.log("works")
-    } catch (err) {
-      console.log(err);
-    }
-  }
-  
+const viewAllDepartments = () => {
+  db.query('SELECT * FROM department', (err, res) => {
+    if (err) throw (err);
+    console.log(res);
+  });
+  printMainMenu();
+};
+
+const viewAllRoles = () => {
+  db.query('SELECT * FROM role', (err, res) => {
+    if (err) throw (err);
+    console.table(res);
+  });
+  printMainMenu();
 }
 
+const viewAllEmployees = () => {
+  db.query('SELECT * FROM employee', (err, res) => {
+    if (err) throw (err);
+    console.log(res);
+  });
+  printMainMenu();
+};
+
+const addDepartment = () => {
+  inquirer
+    .prompt({
+      type: 'input',
+      name: 'DepartmentName',
+      message: 'What is the name of the department?'
+    })
+    .then((answers) => {
+      db.query(`INSERT INTO department SET ?`, answers.DepartmentName, (err, res) => {
+        if (err) {console.log(err)};
+        console.log(res);
+      });
+    })
+
+  // viewAllDepartments();
+}
+
+const addRole = () => {
+  inquirer
+    .prompt({
+      type: 'input',
+      name: 'RoleName',
+      message: 'What is the name of the role?'
+    }, 
+    {
+      type: 'input',
+      name: 'salary',
+      message: 'What is the salary for this role?'
+    }, 
+    {
+      type: 'input',
+      name: 'department', 
+      message: 'What department does this role belong to?'
+    })
+    .then((answers) => {
+      const { RoleName, salary, department } = req.body;
+      db.query(`INSERT INTO role SET ?`, req.body, (err, res) => {
+        if (err) {console.log(err)};
+        console.log(res);
+      });
+    })
+
+  // viewAllDepartments();
+}
+
+const addEmployee = () => {
+  inquirer
+    .prompt({
+      type: 'input',
+      name: 'firstName',
+      message: 'What is the first name of the employee you want to add?'
+    }, 
+    {
+      type: 'input',
+      name: 'lastName',
+      message: 'What is their last name?'
+    }, 
+    {
+      type: 'input',
+      name: 'role',
+      message: 'What is their job title?'
+    }, 
+    {
+      type: 'input',
+      name: 'manager',
+      message: 'Who is their manager?'
+    })
+    .then((answers) => {
+      const { firstName, lastName, role, manager } = req.body;
+      db.query(`INSERT INTO role SET ?`, req.body, (err, res) => {
+        if (err) {console.log(err)};
+        console.log(res);
+      });
+    })
+  // viewAllDepartments();
+}
+
+const updateEmployeeRole = () => {
+  inquirer
+    .prompt({
+      type: 'input',
+      name: 'NewEmployeeName',
+      message: 'What is the name of the department?'
+    })
+    .then((answers) => {
+      db.query(`INSERT INTO department SET ?`, answers.NewEmployeeName, (err, res) => {
+        if (err) {console.log(err)};
+        console.log(res);
+      });
+    })
+
+  // viewAllDepartments();
+}
 
 printMainMenu();
 
-// Questions for inquirer
-// const questions = [{
-//   }, 
-// {
-//   type: 'input',
-//   name: 'DepartmentName',
-//   message: 'What is the name of the department?',
-//   validate: (value) => {if(value){return true;} else {return 'Please select a choice.'}}
-// },
-// {
-//   type: 'input',
-//   name: 'RoleName',
-//   message: 'What is the name of the role?',
-//   validate: (value) => {if(value){return true;} else {return 'Please select a choice.'}}
-// },
-// {
-//   type: 'input',
-//   name: 'RoleSalary',
-//   message: 'What is the salary of the role?',
-//   validate: (value) => {if(value){return true;} else {return 'Please select a choice.'}}},
-// {
-//   type: 'input',
-//   name: 'DepartmentRole',
-//   message: 'Which department does the role belong to?',
-//   validate: (value) => {if(value){return true;} else {return 'Please select a choice.'}}
-// },{
-//   type: 'input',
-//   name: 'EmployeeFirstName',
-//   message: "What is the employee's first name?",
-//   validate: (value) => {if(value){return true;} else {return 'Please select a choice.'}}
-// },{
-//   type: 'input',
-//   name: 'EmployeeLastName',
-//   message: "What is the employee's last name?",
-//   validate: (value) => {if(value){return true;} else {return 'Please select a choice.'}}
-// },{
-//   type: 'input',
-//   name: 'EmployeeRole',
-//   message: "What is the employee's role?",
-//   validate: (value) => {if(value){return true;} else {return 'Please select a choice.'}}
-// },{
-//   type: 'input',
-//   name: 'EmployeeManager',
-//   message: "Who is the employee's manager?",
-//   validate: (value) => {if(value){return true;} else {return 'Please select a choice.'}}
-// },{
-//   type: 'input',
-//   name: 'UpdateEmployeeRole',
-//   message: "Which employee's role would you like to update?",
-//   validate: (value) => {if(value){return true;} else {return 'Please select a choice.'}}
-// }
-// // ,{
-// //   type: 'input',
-// //   name: 'Department name.',
-// //   message: 'What is the name of the department?'
-// // },{
-// //   type: 'input',
-// //   name: 'Department name.',
-// //   message: 'What is the name of the department?'
-// // },
-
-// ]
