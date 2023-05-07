@@ -74,6 +74,7 @@ const viewAllRoles = () => {
   db.query('SELECT * FROM role', (err, res) => {
     if (err) throw (err);
     console.table(res);
+    // console.table??
   });
   printMainMenu();
 }
