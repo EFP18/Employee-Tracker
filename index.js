@@ -63,28 +63,37 @@ const printMainMenu = () => {
 };
 
 const viewAllDepartments = () => {
-  db.query('SELECT * FROM department', (err, res) => {
+  // add a promise in order to use .then (otherwise it calls the function twice)
+  db.promise().query('SELECT * FROM department')
+  .then((res, err) => {
     if (err) throw (err);
-    console.log(res);
-  });
-  printMainMenu();
+    console.table(res[0]);
+  })
+  .then(() => {
+    printMainMenu();
+  })
 };
 
 const viewAllRoles = () => {
-  db.query('SELECT * FROM role', (err, res) => {
+  db.promise().query('SELECT * FROM role')
+  .then((res, err) => {
     if (err) throw (err);
-    console.table(res);
-    // console.table??
-  });
-  printMainMenu();
+    console.table(res[0]);
+  })
+  .then(() => {
+    printMainMenu();
+  })
 }
 
 const viewAllEmployees = () => {
-  db.query('SELECT * FROM employee', (err, res) => {
+  db.promise().query('SELECT * FROM employee')
+  .then((res, err) => {
     if (err) throw (err);
-    console.log(res);
-  });
-  printMainMenu();
+    console.table(res[0]);
+  })
+  .then(() => {
+    printMainMenu();
+  })
 };
 
 const addDepartment = () => {
@@ -95,20 +104,22 @@ const addDepartment = () => {
       message: 'What is the name of the department?'
     })
     .then((answers) => {
-      db.query(`INSERT INTO department SET ?`, answers.DepartmentName, (err, res) => {
+      db.query(`INSERT INTO department SET ?`, {name: answers.DepartmentName}, (err, res) => {
         if (err) {console.log(err)};
-        console.log(res);
+        console.log(`Department ${answers.DepartmentName} added successfully!`);
       });
+    }) 
+    .then(() => {
+      printMainMenu();
     })
-
-  // viewAllDepartments();
 }
 
 const addRole = () => {
   inquirer
-    .prompt({
+    .prompt([
+    {
       type: 'input',
-      name: 'RoleName',
+      name: 'title',
       message: 'What is the name of the role?'
     }, 
     {
@@ -118,67 +129,79 @@ const addRole = () => {
     }, 
     {
       type: 'input',
-      name: 'department', 
+      name: 'department_id', 
       message: 'What department does this role belong to?'
-    })
+    }])
     .then((answers) => {
-      const { RoleName, salary, department } = req.body;
-      db.query(`INSERT INTO role SET ?`, req.body, (err, res) => {
+      // const { RoleName, salary, department } = answers;
+      db.query(`INSERT INTO role SET ?`, 
+      {
+        title: answers.title, 
+        salary: answers.salary, 
+        department_id: answers.department_id
+      }, 
+      (err, res) => {
         if (err) {console.log(err)};
-        console.log(res);
-      });
+        console.log(`Role ${answers} added successfully!`);
+      })
     })
-
-  // viewAllDepartments();
+    .then(() => {
+      printMainMenu();
+    })
 }
 
 const addEmployee = () => {
   inquirer
-    .prompt({
+    .prompt([
+    {
       type: 'input',
-      name: 'firstName',
+      name: 'first_name',
       message: 'What is the first name of the employee you want to add?'
     }, 
     {
       type: 'input',
-      name: 'lastName',
+      name: 'last_name',
       message: 'What is their last name?'
     }, 
     {
       type: 'input',
-      name: 'role',
-      message: 'What is their job title?'
+      name: 'role_id',
+      message: 'What is their role ID?'
     }, 
     {
       type: 'input',
-      name: 'manager',
+      name: 'manager_id',
       message: 'Who is their manager?'
-    })
+    }])
     .then((answers) => {
-      const { firstName, lastName, role, manager } = req.body;
-      db.query(`INSERT INTO role SET ?`, req.body, (err, res) => {
+      // const { firstName, lastName, role, manager } = answers;
+      db.query(`INSERT INTO employee SET ?`, answers, (err, res) => {
         if (err) {console.log(err)};
         console.log(res);
       });
     })
-  // viewAllDepartments();
-}
+    .then(() => {
+      printMainMenu();
+    })
+};
 
 const updateEmployeeRole = () => {
   inquirer
     .prompt({
-      type: 'input',
-      name: 'NewEmployeeName',
-      message: 'What is the name of the department?'
+      type: 'list',
+      name: 'update_role',
+      message: "Which employee's role would you like to update?",
+      choices: [db.query(`SELECT name FROM employee`)]
     })
     .then((answers) => {
-      db.query(`INSERT INTO department SET ?`, answers.NewEmployeeName, (err, res) => {
+      db.query(`INSERT INTO department SET ?`, {name: answers.NewEmployeeName}, (err, res) => {
         if (err) {console.log(err)};
         console.log(res);
       });
     })
-
-  // viewAllDepartments();
+    .then(() => {
+      printMainMenu();
+    })
 }
 
 printMainMenu();
