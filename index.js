@@ -186,12 +186,16 @@ const addEmployee = () => {
 };
 
 const updateEmployeeRole = () => {
+  const arrayOfEmployees = db.query(`SELECT first_name, last_name FROM employee`);
+  // const employeesTable = db.query(`SELECT * FROM employees`)
+  // console.log(arrayOfEmployees)
+
   inquirer
     .prompt({
       type: 'list',
       name: 'update_role',
       message: "Which employee's role would you like to update?",
-      choices: [db.query(`SELECT name FROM employee`)]
+      choices: arrayOfEmployees
     })
     .then((answers) => {
       db.query(`INSERT INTO department SET ?`, {name: answers.NewEmployeeName}, (err, res) => {
