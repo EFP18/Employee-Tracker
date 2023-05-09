@@ -186,19 +186,42 @@ const addEmployee = () => {
 };
 
 const updateEmployeeRole = () => {
-  const arrayOfEmployees = db.query(`SELECT first_name, last_name FROM employee`);
+
+  db.promise().query('SELECT * FROM employee')
+  .then((res, err) => {
+    if (err) throw (err);
+    const employeeTable = res[0, 1]
+    console.log(employeeTable)
+  })
+  
+  // const arrayOfEmployees = db.query(`SELECT first_name, last_name FROM employee`);
   // const employeesTable = db.query(`SELECT * FROM employees`)
   // console.log(arrayOfEmployees)
-
+  
   inquirer
-    .prompt({
+    .prompt([{
       type: 'list',
       name: 'update_role',
       message: "Which employee's role would you like to update?",
-      choices: arrayOfEmployees
-    })
+      choices: employeeTable
+    },
+    {
+      type: 'input', 
+      name: 'first_name',
+      message: 'What do you want to change the first name to?'
+    },
+    {
+      type: 'input', 
+      name: 'last_name',
+      message: 'What do you want to change the last name to?'
+    }])
     .then((answers) => {
-      db.query(`INSERT INTO department SET ?`, {name: answers.NewEmployeeName}, (err, res) => {
+      db.query(`INSERT INTO employee SET ?`, 
+      {
+        first_name: answers.first_name, 
+        last_name: answers.last_name
+      }, 
+      (err, res) => {
         if (err) {console.log(err)};
         console.log(res);
       });

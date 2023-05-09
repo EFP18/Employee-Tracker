@@ -30,7 +30,7 @@ CREATE TABLE employee (
   -- manager id can be NULL if the employee has no manager.
   manager_id INT,
   PRIMARY KEY (id), 
-  FOREIGN KEY (manager_id)
+  FOREIGN KEY (role_id)
   REFERENCES role(id)
 );
 
