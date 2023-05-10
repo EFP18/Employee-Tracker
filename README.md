@@ -1,5 +1,13 @@
 # Employee-Tracker
 
+
+* Uses the [Inquirer package](https://www.npmjs.com/package/inquirer/v/8.2.4).
+
+    * Uses the [MySQL2 package](https://www.npmjs.com/package/mysql2) to connect to a MySQL database.
+
+
+
+
 # 12 SQL: Employee Tracker
 
 ## Your Task
@@ -8,13 +16,7 @@ Developers frequently have to create interfaces that allow non-developers to eas
 
 
 
-## User Story
 
-```md
-AS A business owner
-I WANT to be able to view and manage the departments, roles, and employees in my company
-SO THAT I can organize and plan my business
-```
 
 ## Acceptance Criteria
 
@@ -121,13 +123,6 @@ Try to add some additional functionality to your application, such as the abilit
 
 * The walkthrough video must demonstrate a functional menu with the options outlined in the acceptance criteria.
 
-### Technical Acceptance Criteria: 40%
-
-* Satisfies all of the preceding acceptance criteria plus the following:
-
-    * Uses the [Inquirer package](https://www.npmjs.com/package/inquirer/v/8.2.4).
-
-    * Uses the [MySQL2 package](https://www.npmjs.com/package/mysql2) to connect to a MySQL database.
 
 
 
@@ -148,11 +143,4 @@ Fulfilling any of the following can add up to 20 points to your grade. Note that
 
 * Application allows users to view the total utilized budget of a department&mdash;in other words, the combined salaries of all employees in that department (8 points).
 
-## Review
-
-You are required to submit BOTH of the following for review:
-
-* A walkthrough video demonstrating the functionality of the application.
-
-* The URL of the GitHub repository, with a unique name and a README describing the project.
-
+<!-- server stops when all inquirer prompts stop in addemployee function -->
