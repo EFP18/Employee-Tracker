@@ -27,7 +27,8 @@ const printMainMenu = () => {
         'Add a department.',
         'Add a role.',
         'Add an employee.',
-        'Update an employee role.'
+        'Update an employee role.',
+        'Exit'
       ],
   // validate: (value) => {if(value){return true;} else {return 'Please select a choice.'}}
 
@@ -57,6 +58,9 @@ const printMainMenu = () => {
     if (options === 'Update an employee role.') {
       updateEmployeeRole();
     }
+    if (options === 'Exit') {
+      exitInquirer();
+    }
     
   });
   
@@ -68,8 +72,6 @@ const viewAllDepartments = () => {
   .then((res, err) => {
     if (err) throw (err);
     console.table(res[0]);
-  })
-  .then(() => {
     printMainMenu();
   })
 };
@@ -79,8 +81,6 @@ const viewAllRoles = () => {
   .then((res, err) => {
     if (err) throw (err);
     console.table(res[0]);
-  })
-  .then(() => {
     printMainMenu();
   })
 }
@@ -90,8 +90,6 @@ const viewAllEmployees = () => {
   .then((res, err) => {
     if (err) throw (err);
     console.table(res[0]);
-  })
-  .then(() => {
     printMainMenu();
   })
 };
@@ -107,11 +105,9 @@ const addDepartment = () => {
       db.query(`INSERT INTO department SET ?`, {name: answers.DepartmentName}, (err, res) => {
         if (err) {console.log(err)};
         console.log(`Department ${answers.DepartmentName} added successfully!`);
+        printMainMenu();
       });
     }) 
-    .then(() => {
-      printMainMenu();
-    })
 }
 
 const addRole = () => {
@@ -149,18 +145,16 @@ const addRole = () => {
       }, 
       (err, res) => {
         if (err) {console.log(err)};
-        console.log(`Role ${chosenDept.name} added successfully!`);
+        console.log(`Role ${answers.title} added successfully!`);
+        printMainMenu();
       })
-    })
-    .then(() => {
-      printMainMenu();
     })
   });
 }
 
 const addEmployee = () => {
   db.query('SELECT * FROM role', (err, res) => {
-    
+
     inquirer
     .prompt([
     {
@@ -198,11 +192,9 @@ const addEmployee = () => {
       }, 
       (err, res) => {
         if (err) {console.log(err)};
-        console.log(`Employee ${chosenEmployee.first_name + ' ' + chosenEmployee.last_name} added successfully!`);
+        console.log(`Employee ${answers.first_name + ' ' + answers.last_name} added successfully!`);
+        printMainMenu();
       })
-    })
-    .then(() => {
-      printMainMenu();
     })
   })
 };
