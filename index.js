@@ -15,6 +15,7 @@ const db = mysql.createConnection({
 );
 
 const printMainMenu = () => {
+  // inquirer main menu to ask the user what the would like to do
   inquirer
     .prompt({
       type: 'list',
@@ -30,10 +31,9 @@ const printMainMenu = () => {
         'Update an employee role.',
         'Exit'
       ],
-  // validate: (value) => {if(value){return true;} else {return 'Please select a choice.'}}
-
     })
   
+    // take the answers and depending on what the user chose, call the respective function
   .then((answers) => {
     const { options } = answers;
 
@@ -77,10 +77,12 @@ const viewAllDepartments = () => {
 };
 
 const viewAllRoles = () => {
+  // promisify the query, select everyone, add that to res, and console.table the SQL table.
   db.promise().query('SELECT * FROM role')
   .then((res, err) => {
     if (err) throw (err);
     console.table(res[0]);
+    // call back the main menu of inquirer
     printMainMenu();
   })
 }
@@ -96,14 +98,17 @@ const viewAllEmployees = () => {
 
 const addDepartment = () => {
   inquirer
+  // use inquirer to get the department name
     .prompt({
       type: 'input',
       name: 'DepartmentName',
       message: 'What is the name of the department?'
     })
     .then((answers) => {
+      // insert the new name we got into the table
       db.query(`INSERT INTO department SET ?`, {name: answers.DepartmentName}, (err, res) => {
         if (err) {console.log(err)};
+        // console log that the department was added succesfully
         console.log(`Department ${answers.DepartmentName} added successfully!`);
         printMainMenu();
       });
@@ -111,6 +116,7 @@ const addDepartment = () => {
 }
 
 const addRole = () => {
+  // query the table to get everything from department
   db.query('SELECT * FROM department', (err, res) => {
 
   inquirer
@@ -181,6 +187,7 @@ const addEmployee = () => {
     // }
     ])
     .then((answers) => {
+      // find the role where the title equals to the response we got from the choices in the inquirer
       const chosenRole = res.find(role => role.title === answers.role_id);
       
       db.query(`INSERT INTO employee SET ?`, 
@@ -222,6 +229,7 @@ const updateEmployeeRole = () => {
           })
         .then(answers => {
           const chosenTitle = res.find(role => role.title === answers.role_id);
+          // update the employee based on the response from inquirer
           db.query('UPDATE employee SET role_id = ? WHERE id=?', [chosenTitle.id, chosenEmployee.id]);
 
           printMainMenu();
@@ -233,6 +241,7 @@ const updateEmployeeRole = () => {
 }
 
 const exitInquirer = () => {
+  // exit function to stop inquirer
   db.end();  
 }
 
