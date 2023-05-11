@@ -214,23 +214,27 @@ const updateEmployeeRole = () => {
       const chosenEmployee = res.find(employee => employee.first_name + ' ' + employee.last_name === answers.update_role)
       db.query('SELECT * FROM role', (err, res) => {
         inquirer
-    .prompt({
-      type: 'list', 
-      name: 'role_id',
-      message: 'What will their new role ID be?',
-      choices: res.map(role => role.title)
-      })
-    .then(answers => {
-      const chosenTitle = res.find(role => role.title === answers.role_id);
-      db.query('UPDATE employee SET role_id = ? WHERE id=?', [chosenTitle.id, chosenEmployee.id]);
+        .prompt({
+          type: 'list', 
+          name: 'role_id',
+          message: 'What will their new role ID be?',
+          choices: res.map(role => role.title)
+          })
+        .then(answers => {
+          const chosenTitle = res.find(role => role.title === answers.role_id);
+          db.query('UPDATE employee SET role_id = ? WHERE id=?', [chosenTitle.id, chosenEmployee.id]);
 
-      printMainMenu();
-      // update employee table and set role_id where it matches the id of the chosen employee
+          printMainMenu();
+          // update employee table and set role_id where it matches the id of the chosen employee
+        })
+      }) 
     })
-    }) 
   })
-  
-})
 }
+
+const exitInquirer = () => {
+  db.end();  
+}
+
 printMainMenu();
 
