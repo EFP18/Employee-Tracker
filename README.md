@@ -3,6 +3,10 @@
   ![License](https://img.shields.io/badge/License-MIT.svg)
   https://opensource.org/licenses/MIT
 
+  [Click here for the Video Walk-through](https://drive.google.com/file/d/1LnxgyXILymZMwLGLnqnyiignkoct2g83/view)
+
+  GitHub: https://github.com/EFP18/Employee-Tracker
+
 
   ## Table of Contents
 
@@ -21,23 +25,13 @@
   In VS Code, you need to open the Terminal and first type npm i, so that all dependencies can be installed. After that, the user needs to type in node index.js to initialize the Inquirer Prompt, and follow the instructions in the Terminal to get the results and the information they are looking for. 
 
   ### Usage
-    To give acess to a user into the database of a certain company. 
+  To give acess to a user into the database of a certain company. 
 
   ### License
-    MIT
+  MIT
 
   ### Questions
   * GitHub: http://github.com/https://github.com/EFP18
   * Email: ester.p18@hotmail.com
-  
-
-
-## Mock-Up
-
-The following video shows an example of the application being used from the command line:
-
-[![A video thumbnail shows the command-line employee management application with a play button overlaying the view.](./Assets/12-sql-homework-video-thumbnail.png)](https://2u-20.wistia.com/medias/2lnle7xnpk)
-
-
 
 
