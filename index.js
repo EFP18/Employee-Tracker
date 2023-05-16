@@ -161,48 +161,56 @@ const addRole = () => {
 const addEmployee = () => {
   db.query('SELECT * FROM role', (err, res) => {
 
-    inquirer
-    .prompt([
-    {
-      type: 'input',
-      name: 'first_name',
-      message: 'What is the first name of the employee you want to add?'
-    }, 
-    {
-      type: 'input',
-      name: 'last_name',
-      message: 'What is their last name?'
-    }, 
-    {
-      type: 'list',
-      name: 'role_id',
-      message: 'What is their role?', 
-      choices: res.map(role => role.title)
-    }, 
-    // {
-    //   type: 'list',
-    //   name: 'manager_id',
-    //   message: 'Who is their manager?',
-    //   choices: res.map(employee => employee.manager_id)
-    // }
-    ])
-    .then((answers) => {
-      // find the role where the title equals to the response we got from the choices in the inquirer
-      const chosenRole = res.find(role => role.title === answers.role_id);
-      
-      db.query(`INSERT INTO employee SET ?`, 
+    db.query('SELECT * FROM employee', (err, employeeData) => {
+
+      inquirer
+      .prompt([
       {
-        first_name: answers.first_name,
-        last_name: answers.last_name,
-        role_id: chosenRole.id
-        // manager_id:
+        type: 'input',
+        name: 'first_name',
+        message: 'What is the first name of the employee you want to add?'
       }, 
-      (err, res) => {
-        if (err) {console.log(err)};
-        console.log(`Employee ${answers.first_name + ' ' + answers.last_name} added successfully!`);
-        printMainMenu();
+      {
+        type: 'input',
+        name: 'last_name',
+        message: 'What is their last name?'
+      }, 
+      {
+        type: 'list',
+        name: 'role_id',
+        message: 'What is their role?', 
+        choices: res.map(({ id, title }) => ({
+          value: id,
+          name: title
+        }))
+      }, 
+      {
+        type: 'list',
+        name: 'manager_id',
+        message: 'Who is their manager?',
+        choices: employeeData.map(({ id, first_name, last_name }) => ({
+          value: id,
+          name: `${first_name} ${last_name}`
+        }))
+      }
+      ])
+      .then((answers) => {
+        // find the role where the title equals to the response we got from the choices in the inquirer        
+        db.query(`INSERT INTO employee SET ?`, 
+        {
+          first_name: answers.first_name,
+          last_name: answers.last_name,
+          role_id: answers.role_id,
+          manager_id: answers.manager_id
+        }, 
+        (err, res) => {
+          if (err) {console.log(err)};
+          console.log(`Employee ${answers.first_name + ' ' + answers.last_name} added successfully!`);
+          printMainMenu();
+        })
       })
     })
+
   })
 };
 
@@ -239,6 +247,7 @@ const updateEmployeeRole = () => {
     })
   })
 }
+
 
 const exitInquirer = () => {
   // exit function to stop inquirer

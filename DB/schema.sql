@@ -28,7 +28,7 @@ CREATE TABLE employee (
   last_name VARCHAR(30) NOT NULL,
   role_id INT NOT NULL,
   -- manager id can be NULL if the employee has no manager.
-  manager_id INT,
+  manager_id INT NOT NULL,
   PRIMARY KEY (id), 
   FOREIGN KEY (role_id)
   REFERENCES role(id)
