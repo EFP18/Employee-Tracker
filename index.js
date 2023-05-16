@@ -161,6 +161,7 @@ const addRole = () => {
 const addEmployee = () => {
   db.query('SELECT * FROM role', (err, res) => {
 
+    // nested query so we can use the manager_id
     db.query('SELECT * FROM employee', (err, employeeData) => {
 
       inquirer
@@ -214,6 +215,7 @@ const addEmployee = () => {
   })
 };
 
+// update employee function
 const updateEmployeeRole = () => {
 
   db.query('SELECT * FROM employee', (err, res) => {
