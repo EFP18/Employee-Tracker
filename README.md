@@ -18,7 +18,7 @@
 
 
   ### Description
-  This is an content management systems, specifically an employee tracker, that allows anyone with access to view and edit the data within it. It targets non-developers who aren't familiar with certain technologies, but wish to access certain databases. 
+  This is a content management systems, specifically an employee tracker, that allows anyone with access to view and edit the data within it. It targets non-developers who aren't familiar with certain technologies, but wish to access certain databases. 
   This project is using Node.js, Inquirer, and MySQL. One can choose between different options from the Inquirer Prompt as to what they would like to do through the terminal. MySQL is used to build the database and the different tables, as well as the values of the tables. 
 
   ### Installation
